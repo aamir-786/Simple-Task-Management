@@ -43,11 +43,11 @@ router.post('/register', async (req, res) => {
 
       const hostUrl = req.get('host') === 'localhost:5000' ? 'http://localhost:5000' : `https://${req.get('host')}`;
       const verifyUrl = `${hostUrl}/api/auth/verify/${verificationToken}`;
-      
+
       // Simulate Email Sending
       console.log('===================================================');
-      console.log(`📧 NEW USER REGISTRATION: ${username}`);
-      console.log(`🔗 VERIFICATION LINK: ${verifyUrl}`);
+      console.log(`NEW USER REGISTRATION: ${username}`);
+      console.log(`VERIFICATION LINK: ${verifyUrl}`);
       console.log('===================================================');
 
       // Try sending email
@@ -79,15 +79,15 @@ router.post('/register', async (req, res) => {
 // Verify Email
 router.get('/verify/:token', (req, res) => {
   const { token } = req.params;
-  
-  db.run(`UPDATE users SET is_verified = 1, verification_token = NULL WHERE verification_token = ?`, [token], function(err) {
+
+  db.run(`UPDATE users SET is_verified = 1, verification_token = NULL WHERE verification_token = ?`, [token], function (err) {
     if (err) return res.status(500).send('Error verifying account.');
     if (this.changes === 0) return res.status(400).send('Invalid or expired verification token.');
-    
-        const hostIsLocal = req.get('host') === 'localhost:5000';
-        const redirectUrl = process.env.FRONTEND_URL || (hostIsLocal ? 'http://localhost:5173' : 'https://simple-task-management-nine.vercel.app');
-        
-        res.send(`
+
+    const hostIsLocal = req.get('host') === 'localhost:5000';
+    const redirectUrl = process.env.FRONTEND_URL || (hostIsLocal ? 'http://localhost:5173' : 'https://simple-task-management-nine.vercel.app');
+
+    res.send(`
           <div style="text-align:center; margin-top:50px; font-family:sans-serif;">
             <h1 style="color:green;">Account Verified Successfully!</h1>
             <p>You can now return to the app and login.</p>
