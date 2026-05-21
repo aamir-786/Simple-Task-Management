@@ -1,4 +1,7 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const API_URL = import.meta.env.VITE_API_URL || 
+  (import.meta.env.MODE === 'production' 
+    ? 'https://simple-task-management-04ro.onrender.com/api' 
+    : 'http://localhost:5000/api');
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');
