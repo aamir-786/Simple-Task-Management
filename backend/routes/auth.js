@@ -84,13 +84,16 @@ router.get('/verify/:token', (req, res) => {
     if (err) return res.status(500).send('Error verifying account.');
     if (this.changes === 0) return res.status(400).send('Invalid or expired verification token.');
     
-    res.send(`
-      <div style="text-align:center; margin-top:50px; font-family:sans-serif;">
-        <h1 style="color:green;">Account Verified Successfully!</h1>
-        <p>You can now return to the app and login.</p>
-        <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}" style="padding:10px 20px; background:#4f46e5; color:white; text-decoration:none; border-radius:8px; font-weight:bold; display:inline-block; margin-top:10px;">Go to Login</a>
-      </div>
-    `);
+        const hostIsLocal = req.get('host') === 'localhost:5000';
+        const redirectUrl = process.env.FRONTEND_URL || (hostIsLocal ? 'http://localhost:5173' : 'https://simple-task-management-nine.vercel.app');
+        
+        res.send(`
+          <div style="text-align:center; margin-top:50px; font-family:sans-serif;">
+            <h1 style="color:green;">Account Verified Successfully!</h1>
+            <p>You can now return to the app and login.</p>
+            <a href="${redirectUrl}" style="padding:10px 20px; background:#4f46e5; color:white; text-decoration:none; border-radius:8px; font-weight:bold; display:inline-block; margin-top:10px;">Go to Login</a>
+          </div>
+        `);
   });
 });
 
