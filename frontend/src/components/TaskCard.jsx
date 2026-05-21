@@ -1,9 +1,12 @@
 import React from 'react';
-import { Check, Trash2 } from 'lucide-react';
+import { Check, Trash2, Clock } from 'lucide-react';
+import { format } from 'date-fns';
 
 function TaskCard({ task, onToggleStatus, onDelete }) {
   const isCompleted = task.status === 'completed';
-  const dateStr = task.created_at ? new Date(task.created_at) : new Date();
+  // SQLite CURRENT_TIMESTAMP is UTC but lacks the 'Z' suffix, causing it to be parsed as local time by default.
+  // We append 'Z' to force JavaScript to parse it as UTC, fixing the "5 hours ago" bug.
+  const dateStr = task.created_at ? new Date(task.created_at + 'Z') : new Date();
 
   return (
     <div className={`task-item ${isCompleted ? 'completed' : ''}`}>
@@ -36,7 +39,11 @@ function TaskCard({ task, onToggleStatus, onDelete }) {
         </div>
       )}
       
-      <div className="task-footer-card" style={{ justifyContent: 'flex-end' }}>
+      <div className="task-footer-card">
+        <span className="task-date" style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.85rem', fontWeight: '500' }}>
+          <Clock size={14} />
+          {format(dateStr, 'MMM d, h:mm a')}
+        </span>
         
         <div className="task-actions">
           <button 
