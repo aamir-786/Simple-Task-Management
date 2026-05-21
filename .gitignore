@@ -9,5 +9,4 @@ database.sqlite
 database.sqlite-journal
 
 # Environment variables
-.env
-.env.local
+config.bat

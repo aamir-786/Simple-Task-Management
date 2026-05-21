@@ -152,7 +152,11 @@ function App() {
         <div className="dashboard-header">
           <div className="header-titles">
             <h2>My Tasks</h2>
-            <p>You have {tasks.filter(t => t.status === 'pending').length} active tasks remaining.</p>
+            <p>
+              {tasks.filter(t => t.status === 'pending').length === 0 
+                ? 'You have no active tasks remaining.' 
+                : `You have ${tasks.filter(t => t.status === 'pending').length} active task${tasks.filter(t => t.status === 'pending').length === 1 ? '' : 's'} remaining.`}
+            </p>
           </div>
           <div className="dashboard-controls">
             <div className="glass-pills">
