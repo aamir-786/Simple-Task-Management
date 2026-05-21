@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { AlertCircle, Search } from 'lucide-react';
+import { AlertCircle, Search, LogOut, CheckCircle2 } from 'lucide-react';
 
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
 import ConfirmModal from './components/ConfirmModal';
+import AuthForm from './components/AuthForm';
 import { fetchTasksAPI, createTaskAPI, updateTaskStatusAPI, deleteTaskAPI } from './api';
 
 function App() {
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
+
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   // Filter & Search State
@@ -20,8 +26,23 @@ function App() {
   const [taskToDelete, setTaskToDelete] = useState(null);
 
   useEffect(() => {
-    loadTasks();
-  }, []);
+    if (user) {
+      loadTasks();
+    }
+  }, [user]);
+
+  const handleLogin = (userData, token) => {
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(userData));
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+    setTasks([]);
+  };
 
   const loadTasks = async () => {
     try {
@@ -51,6 +72,7 @@ function App() {
       setTasks(tasks.map(t => t.id === id ? updatedTask : t));
     } catch (err) {
       alert(err.message);
+      loadTasks();
     }
   };
 
@@ -77,6 +99,10 @@ function App() {
     setTaskToDelete(null);
   };
 
+  if (!user) {
+    return <AuthForm onLogin={handleLogin} />;
+  }
+
   const filteredTasks = tasks.filter(task => {
     const matchesFilter = filter === 'all' || task.status === filter;
     const matchesSearch = task.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -86,14 +112,25 @@ function App() {
 
   return (
     <div className="container">
-      <header className="header">
-        <h1>Task Management</h1>
-        <p>Organize your work effectively</p>
+      <header className="app-header">
+        <div className="header-brand">
+          <div className="logo-icon">
+            <CheckCircle2 size={24} color="#fff" />
+          </div>
+          <div>
+            <h1>Task Flow</h1>
+            <p>Welcome back, <span className="highlight">{user?.name || user?.username.split('@')[0]}</span></p>
+          </div>
+        </div>
+        
+        <button onClick={handleLogout} className="btn-logout" title="Sign Out">
+          <LogOut size={18} />
+          <span>Logout</span>
+        </button>
       </header>
 
       <TaskForm onTaskAdded={handleAddTask} />
 
-      {/* Controls */}
       <div className="controls">
         <div className="filters">
           <button 

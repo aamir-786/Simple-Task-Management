@@ -6,7 +6,7 @@ The application features a modern, responsive frontend and a robust RESTful API 
 
 ---
 
-## 🏗️ Project Architecture & Directory Structure
+## Project Architecture & Directory Structure
 
 The project follows a clean, professional separation of concerns (Frontend and Backend) with an organized internal directory structure:
 
@@ -91,7 +91,7 @@ Base URL: `http://localhost:5000/api`
 
 ---
 
-## 🎨 Features & UX Improvements (Bonus Implementations)
+## Features & UX Improvements (Bonus Implementations)
 
 While building the core requirements, several enhancements were added to provide a professional, production-ready feel:
 
@@ -109,7 +109,7 @@ While building the core requirements, several enhancements were added to provide
 
 ---
 
-## 💭 Assumptions & Future Improvements
+## Assumptions & Future Improvements
 
 **Assumptions:**
 - **Database Choice:** SQLite was chosen to minimize setup friction for reviewers (no need to install MySQL/Postgres locally). The database is entirely self-contained.
@@ -121,4 +121,5 @@ While building the core requirements, several enhancements were added to provide
 - **Deployment:** The backend could be hosted on Render/Heroku and the frontend on Vercel/Netlify. (I have configured the frontend to use environment variables for the API URL, making deployment seamless).
 
 ---
-*Developed for Effective Risk Management Pty Ltd.*
+*Developed as a Technical Assignment*  
+*Name : Aamir Hussain*
