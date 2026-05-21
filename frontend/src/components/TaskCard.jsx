@@ -1,6 +1,5 @@
 import React from 'react';
-import { Check, Trash2, Clock } from 'lucide-react';
-import { format, formatDistanceToNow } from 'date-fns';
+import { Check, Trash2 } from 'lucide-react';
 
 function TaskCard({ task, onToggleStatus, onDelete }) {
   const isCompleted = task.status === 'completed';
@@ -37,11 +36,7 @@ function TaskCard({ task, onToggleStatus, onDelete }) {
         </div>
       )}
       
-      <div className="task-footer-card">
-        <span className="task-date" title={format(dateStr, 'PPpp')} style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.85rem' }}>
-          <Clock size={14} />
-          {formatDistanceToNow(dateStr, { addSuffix: true })}
-        </span>
+      <div className="task-footer-card" style={{ justifyContent: 'flex-end' }}>
         
         <div className="task-actions">
           <button 
